@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:NYTD.App.Styles"
+                    xmlns:cal="http://www.caliburnproject.org"
+                    xmlns:templateSelectors="clr-namespace:NYTD.App.TemplateSelectors"
+                    xmlns:models="clr-namespace:NYTD.App.Models"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    
+                    
+                    
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+
+    <Style x:Key="OptionsMenu_ListViewItem" TargetType="ListViewItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Button ToolTip="{Binding ToolTip}"
+                            Content="{Binding Content}"
+                            cal:Message.Attach="MakeClick"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="SingleItem" DataType="models:MenuItem">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon Width="30" Height="25" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Kind="{Binding Icon}"/>
+            <TextBlock Grid.Column="1" FontSize="20" Text="{Binding Title}"/>
+        </Grid>
+    </DataTemplate>
+
+    <Style x:Key="Menu_TreeView" TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+        <Setter Property="ItemsSource" Value="{Binding SubMenu}"/>
+        <Setter Property="HeaderTemplate" Value="{StaticResource SingleItem}"/>
+    </Style>
+    
+</ResourceDictionary>
