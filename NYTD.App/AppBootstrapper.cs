@@ -2,8 +2,7 @@ namespace NYTD.App {
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
-    using NYTD.App.Services.Impl;
-    using NYTD.App.Services.Interfaces;
+    using NYTD.App.Persistence;
     using NYTD.App.ViewModels;
 
     public class AppBootstrapper : BootstrapperBase {
@@ -16,9 +15,10 @@ namespace NYTD.App {
         protected override void Configure() {
             container = new SimpleContainer();
 
+            container.Singleton<JSONHelper>();
+
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<IEventAggregator, EventAggregator>();
-            container.Singleton<IMenuService, MenuService>();
             container.PerRequest<IShell, ShellViewModel>();
         }
 

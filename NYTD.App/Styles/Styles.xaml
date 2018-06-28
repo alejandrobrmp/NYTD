@@ -4,12 +4,10 @@
                     xmlns:cal="http://www.caliburnproject.org"
                     xmlns:templateSelectors="clr-namespace:NYTD.App.TemplateSelectors"
                     xmlns:models="clr-namespace:NYTD.App.Models"
+                    xmlns:viewmodels="clr-namespace:NYTD.App.ViewModels"
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     
-                    
-                    
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-
 
     <Style x:Key="OptionsMenu_ListViewItem" TargetType="ListViewItem">
         <Setter Property="Template">
@@ -23,20 +21,31 @@
         </Setter>
     </Style>
 
-    <DataTemplate x:Key="SingleItem" DataType="models:MenuItem">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon Width="30" Height="25" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Kind="{Binding Icon}"/>
-            <TextBlock Grid.Column="1" FontSize="20" Text="{Binding Title}"/>
-        </Grid>
-    </DataTemplate>
+    <Style TargetType="viewmodels:MenuItemViewModel" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-    <Style x:Key="Menu_TreeView" TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-        <Setter Property="ItemsSource" Value="{Binding SubMenu}"/>
-        <Setter Property="HeaderTemplate" Value="{StaticResource SingleItem}"/>
+                        <materialDesign:PackIcon Grid.Column="0"
+                                                 Width="25"
+                                                 Height="25"
+                                                 HorizontalAlignment="Center"
+                                                 Kind="{Binding Icon, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type viewmodels:MenuItemViewModel}}}"/>
+                        <ContentPresenter Grid.Column="1"
+                                          Margin="5,0,0,0"
+                                          TextBlock.FontSize="20"
+                                          HorizontalAlignment="Center"
+                                          Content="{Binding Header, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type viewmodels:MenuItemViewModel}}}"/>
+
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
-    
+
 </ResourceDictionary>

@@ -1,38 +1,37 @@
 ﻿using Caliburn.Micro;
+using NYTD.App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace NYTD.App.ViewModels
 {
-    public class SearchViewModel : Screen, IHandle<object>
+    public class SearchViewModel : ContentViewModelBase<SearchViewModel>
     {
+        private string searchBox;
+        public string SearchBox { get => searchBox; set => searchBox = value; }
 
-        private readonly IEventAggregator _eventAggregator;
 
-        public SearchViewModel(IEventAggregator eventAggregator)
+        public SearchViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
         {
-            _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);
-        }
-
-        public void Handle(object message)
-        {
-            
         }
 
         protected override void OnActivate()
         {
-            _eventAggregator.Subscribe(this);
             base.OnActivate();
+            _eventAggregator.PublishOnUIThread(new EventAggregatorMessage<ShellViewModel>()
+            {
+                Kind = EventAggregatorMessageKind.TitleChangeRequest,
+                Message = "Search"
+            });
         }
 
-        protected override void OnDeactivate(bool close)
+        public override void Handle(EventAggregatorMessage<SearchViewModel> message)
         {
-            _eventAggregator.Unsubscribe(this);
-            base.OnDeactivate(close);
+            
         }
     }
 }
