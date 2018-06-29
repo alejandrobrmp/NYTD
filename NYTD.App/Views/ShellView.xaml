@@ -17,16 +17,20 @@
         WindowState="{Binding WindowState}"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+        Left="0"
+        Top="0"
+        SizeToContent="Manual"
+        ResizeMode="CanResizeWithGrip">
 
-    <Grid Background="White">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
         <materialDesign:DialogHost Identifier="RootDialog">
             <materialDesign:DrawerHost>
                 <DockPanel>
-                    <materialDesign:ColorZone
-                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                            Mode="PrimaryMid"
-                            DockPanel.Dock="Top">
+                    <materialDesign:ColorZone Mode="PrimaryMid"
+                                              materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                              DockPanel.Dock="Top"
+                                              cal:Message.Attach="[Event MouseDown] = [Action Move($view, $eventArgs)]">
                         <Grid>
                             <DockPanel>
                                 <TextBlock x:Name="Title"

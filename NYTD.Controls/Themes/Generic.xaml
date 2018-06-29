@@ -3,4 +3,138 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:NYTD.Controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <Style TargetType="{x:Type local:FilterControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:FilterControl}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ContentPresenter ContentSource="Bar"
+                                              Grid.Row="0"
+                                              Grid.Column="0"/>
+
+                            <ToggleButton x:Name="FilterToggle"
+                                          IsChecked="{Binding IsExpanded}"
+                                          Style="{DynamicResource MaterialDesignFlatToggleButton}"
+                                          Grid.Row="0"
+                                          Grid.Column="1">
+                                <materialDesign:PackIcon x:Name="Icon"
+                                                         Kind="Filter"
+                                                         HorizontalAlignment="Stretch"
+                                                         VerticalAlignment="Stretch">
+                                    <materialDesign:PackIcon.Style>
+                                        <Style TargetType="materialDesign:PackIcon">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsChecked, ElementName=FilterToggle}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                 To="0"
+                                                                                 Duration="0:0:0.1"/>
+                                                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.1"
+                                                                                               Duration="0"
+                                                                                               Storyboard.TargetProperty="Kind">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                                                        <DiscreteObjectKeyFrame.Value>
+                                                                            <materialDesign:PackIconKind>
+                                                                                ArrowDown
+                                                                            </materialDesign:PackIconKind>
+                                                                        </DiscreteObjectKeyFrame.Value>
+                                                                    </DiscreteObjectKeyFrame>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                 BeginTime="0:0:0.1"
+                                                                                 To="1"
+                                                                                 Duration="0:0:0.1"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                 To="0"
+                                                                                 Duration="0:0:0.1"/>
+                                                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.1"
+                                                                                               Duration="0"
+                                                                                               Storyboard.TargetProperty="Kind">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                                                        <DiscreteObjectKeyFrame.Value>
+                                                                            <materialDesign:PackIconKind>
+                                                                                Filter
+                                                                            </materialDesign:PackIconKind>
+                                                                        </DiscreteObjectKeyFrame.Value>
+                                                                    </DiscreteObjectKeyFrame>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                 BeginTime="0:0:0.1"
+                                                                                 To="1"
+                                                                                 Duration="0:0:0.1"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </materialDesign:PackIcon.Style>
+                                </materialDesign:PackIcon>
+                            </ToggleButton>
+
+                            <Grid x:Name="FilterContent"
+                                  Height="0"
+                                  Grid.Row="1"
+                                  Grid.ColumnSpan="2">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ContentPresenter ContentSource="FilterContent"/>
+                                </ScrollViewer>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=FilterToggle}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                             To="100"
+                                                                             AccelerationRatio=".1"
+                                                                             DecelerationRatio=".9"
+                                                                             Duration="0:0:.3"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                             To="0"
+                                                                             AccelerationRatio=".1"
+                                                                             DecelerationRatio=".9"
+                                                                             Duration="0:0:.3"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:NYTD.Controls;assembly=NYTD.Controls"
              
              
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -28,7 +29,7 @@
             <Grid>
                 
             </Grid>
-            
+
             <materialDesign:ColorZone
                 Mode="Standard"
                 CornerRadius="2"
@@ -36,84 +37,58 @@
                 HorizontalAlignment="Stretch"
                 Margin="10"
                 materialDesign:ShadowAssist.ShadowDepth="Depth5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Button Style="{DynamicResource MaterialDesignToolButton}"
-                            Margin="5,0,0,0"
-                            IsEnabled="False"
-                            Opacity="1">
-                        <materialDesign:PackIcon Kind="Magnify"
+                
+                <controls:FilterControl ExpandSize="100">
+                    <controls:FilterControl.Bar>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Button x:Name="Search"
+                                    cal:Message.Attach="[Event Click] = [Action Search()]"
+                                    Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                                    Margin="8 0 0 0"
+                                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSearching}"
+                                    materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSearching}"
+                                    Background="Transparent">
+                                <materialDesign:PackIcon Height="24" Width="24" Kind="Magnify"/>
+                            </Button>
+                            <!--<Button Style="{DynamicResource MaterialDesignRaisedLightButton}"
+                                    IsEnabled="True"
+                                    Margin="5,0,0,0"
+                                    Opacity="1"
+                                    Background="Transparent">
+                                <materialDesign:PackIcon Kind="Magnify"
                                                  Opacity=".56"
                                                  Width="24"
                                                  Height="24"/>
-                    </Button>
-                    <TextBox x:Name="SearchBox"
-                             Grid.Column="1"
-                             Margin="8 0 0 0"
-                             materialDesign:HintAssist.Hint="Search" 
-                             materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                             BorderThickness="0"
-                             MinWidth="200"
-                             VerticalAlignment="Center"
-                             FontSize="26"/>
-                    <Button Style="{DynamicResource MaterialDesignToolButton}"
-                            Grid.Column="2"
-                            Margin="5,0,5,0">
-                        <materialDesign:PackIcon Kind="CloseCircle"
+                            </Button>-->
+                            <TextBox x:Name="SearchBox"
+                                     Grid.Column="1"
+                                     Margin="8 0 0 0"
+                                     materialDesign:HintAssist.Hint="Search" 
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                     BorderThickness="0"
+                                     MinWidth="200"
+                                     VerticalAlignment="Center"
+                                     FontSize="26"/>
+                            <Button Style="{DynamicResource MaterialDesignToolButton}"
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0">
+                                <materialDesign:PackIcon Kind="CloseCircle"
                                                  Opacity=".56"
                                                  Width="24"
                                                  Height="24"/>
-                    </Button>
-                    <ToggleButton x:Name="FilterToggle"
-                                  Grid.Column="3"
-                                  DockPanel.Dock="Left"
-                                  Style="{StaticResource MaterialDesignFlatToggleButton}"
-                                  Margin="10,0">
-                        <materialDesign:PackIcon Kind="Filter" Height="21" Width="21" />
-                    </ToggleButton>
-
-                    <Grid Grid.Row="1"
-                          Grid.ColumnSpan="4">
-                        <Grid Visibility="{Binding IsChecked, ElementName=FilterToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            
+                            </Button>
                         </Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsChecked, ElementName=FilterToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Value="Visible">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="100" Duration="0:0:.3" AccelerationRatio=".2" DecelerationRatio=".8"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Height" From="100" To="0" Duration="0:0:.3" AccelerationRatio=".2" DecelerationRatio=".8"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        
-                        
-                        
-                    </Grid>
-                    
-                </Grid>
+                    </controls:FilterControl.Bar>
+                </controls:FilterControl>
             </materialDesign:ColorZone>
             <materialDesign:ColorZone
                 Grid.Row="1"
