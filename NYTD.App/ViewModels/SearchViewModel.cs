@@ -9,7 +9,9 @@ using System.Windows.Input;
 
 namespace NYTD.App.ViewModels
 {
-    public class SearchViewModel : ContentViewModelBase<SearchViewModel>
+    public class SearchViewModel :
+        ContentViewModelBase<SearchViewModel>,
+        IHandle<EventAggregatorMessage<IScreen>>
     {
         private string searchBox;
         public string SearchBox { get => searchBox; set => searchBox = value; }
@@ -32,6 +34,11 @@ namespace NYTD.App.ViewModels
         public override void Handle(EventAggregatorMessage<SearchViewModel> message)
         {
             
+        }
+
+        public void Handle(EventAggregatorMessage<IScreen> message)
+        {
+
         }
     }
 }

@@ -78,12 +78,53 @@
                     </materialDesign:ColorZone>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="220"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <controls:MenuControl/>
-                        <ContentControl x:Name="ActiveItem"
-                                        Grid.Column="1"/>
+                        <Border VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    MinWidth="200">
+                            <materialDesign:ColorZone Mode="PrimaryMid"
+                                                      VerticalAlignment="Stretch"
+                                                      HorizontalAlignment="Stretch"
+                                                      materialDesign:ShadowAssist.ShadowDepth="Depth5">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Stretch">
+                                        <Button x:Name="GoHome"
+                                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                                Height="120">
+                                            <materialDesign:PackIcon Kind="YoutubePlay"
+                                                                 HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"
+                                                                 Height="150"
+                                                                 Width="151"/>
+                                        </Button>
+                                    </Grid>
+                                    <materialDesign:ColorZone Mode="Standard"
+                                                              Grid.Row="1"
+                                                              Padding="0,10,0,0"
+                                                              HorizontalAlignment="Stretch"
+                                                              VerticalAlignment="Stretch"
+                                                              materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                                        <TreeView ItemsSource="{Binding MainMenu}"
+                                                  MinWidth="200"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  cal:Message.Attach="[Event MouseLeftButtonUp] = [Action MenuClick($this, $eventArgs)]"/>
+                                    </materialDesign:ColorZone>
+                                </Grid>
+                            </materialDesign:ColorZone>
+                        </Border>
+                        <Border Grid.Column="1"
+                                    Padding="5">
+                            <ContentControl x:Name="ActiveItem"/>
+                        </Border>
                     </Grid>
                 </DockPanel>
             </materialDesign:DrawerHost>

@@ -8,15 +8,18 @@ using System.Threading.Tasks;
 
 namespace NYTD.App.ViewModels
 {
-    public abstract class ContentViewModelBase<T> : Screen, IHandle<EventAggregatorMessage<T>> where T : IScreen
+    public abstract class ContentViewModelBase<T> :
+        Screen,
+        IHandle<EventAggregatorMessage<T>> where T : IScreen
     {
         protected readonly IEventAggregator _eventAggregator;
-        public abstract void Handle(EventAggregatorMessage<T> message);
 
         public ContentViewModelBase(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }
+
+        public abstract void Handle(EventAggregatorMessage<T> message);
 
         protected override void OnActivate()
         {
@@ -29,6 +32,5 @@ namespace NYTD.App.ViewModels
             _eventAggregator.Unsubscribe(this);
             base.OnDeactivate(close);
         }
-
     }
 }

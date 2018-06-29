@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace NYTD.App.Views
 {
     /// <summary>
-    /// Lógica de interacción para SearchView.xaml
+    /// Lógica de interacción para HomeView.xaml
     /// </summary>
-    public partial class SearchView : UserControl
+    public partial class HomeView : UserControl
     {
-        public SearchView()
+        public HomeView()
         {
             InitializeComponent();
         }

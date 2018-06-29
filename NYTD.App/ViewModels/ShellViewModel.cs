@@ -12,7 +12,8 @@ namespace NYTD.App.ViewModels {
     public class ShellViewModel :
         Conductor<IScreen>.Collection.OneActive,
         IShell,
-        IHandle<EventAggregatorMessage<ShellViewModel>>
+        IHandle<EventAggregatorMessage<ShellViewModel>>,
+        IHandle<EventAggregatorMessage<IScreen>>
     {
         #region Services
 
@@ -30,10 +31,9 @@ namespace NYTD.App.ViewModels {
 
         private string title;
         private WindowState windowState = WindowState.Normal;
-        private bool leftPanelToggle;
-        private OptionMenuViewModel fixedOptions;
         private IScreen activeScreen;
-        private OptionMenuViewModel currentPageOptions;
+        private MenuItemViewModel activeMenu;
+        private IScreen homeScreen;
         private List<MenuItemViewModel> mainMenu;
 
         #endregion
@@ -63,31 +63,8 @@ namespace NYTD.App.ViewModels {
         {
             get => WindowState == WindowState.Maximized ? PackIconKind.WindowRestore : PackIconKind.WindowMaximize;
         }
-        public OptionMenuViewModel FixedOptions { get => fixedOptions;
-            set
-            {
-                fixedOptions = value;
-                NotifyOfPropertyChange();
-            }
-        }
-        public OptionMenuViewModel CurrentPageOptions { get => currentPageOptions;
-            set
-            {
-                currentPageOptions = value;
-                NotifyOfPropertyChange();
-            }
-        }
         public IScreen ActiveScreen { get => activeScreen; set => activeScreen = value; }
         public List<MenuItemViewModel> MainMenu { get => mainMenu; set => mainMenu = value; }
-        public bool LeftPanelToggle
-        {
-            get => leftPanelToggle;
-            set
-            {
-                leftPanelToggle = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         #endregion
 
@@ -97,6 +74,7 @@ namespace NYTD.App.ViewModels {
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
+            homeScreen = new HomeViewModel(eventAggregator);
         }
 
         #endregion
@@ -116,13 +94,29 @@ namespace NYTD.App.ViewModels {
                 },
                 new MenuItemViewModel
                 {
-                    Header = "Search",
+                    Header = "Downloads",
                     Icon = PackIconKind.Download,
                     Screen = null,
+                },
+                new MenuItemViewModel
+                {
+                    Header = "Management",
+                    Icon = PackIconKind.FolderOutline,
+                    Screen = null,
+                    ItemsSource = new List<MenuItemViewModel>
+                    {
+                        new MenuItemViewModel
+                        {
+                            Header = "Settings",
+                            Icon = PackIconKind.Settings,
+                            Screen = null
+                        }
+                    }
                 }
             };
-            mainMenu[0].IsSelected = true;
-            SelectedMenuChanged(this, new RoutedPropertyChangedEventArgs<object>(null, mainMenu[0]));
+            //mainMenu[0].IsSelected = true;
+            //SelectedMenuChanged(this, new RoutedPropertyChangedEventArgs<object>(null, mainMenu[0]));
+            ActivateItem(homeScreen);
         }
 
         #endregion
@@ -141,20 +135,45 @@ namespace NYTD.App.ViewModels {
             }
         }
 
+        public void Handle(EventAggregatorMessage<IScreen> message)
+        {
+        }
+
         #endregion
 
         #region Helpers
 
-        public void SelectedMenuChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        public void MenuClick(object sender, MouseButtonEventArgs e)
         {
-            MenuItemViewModel newItem = e.NewValue as MenuItemViewModel;
-            if (newItem.Items?.Count > 0 || newItem.Screen is null)
+            MenuItemViewModel item = sender as MenuItemViewModel;
+            if (item != null)
             {
-                return;
+                ManageSelection(item);
             }
-            DeactivateItem(ActiveItem, true);
-            ActivateItem(Activator.CreateInstance(newItem.Screen, new object[] { _eventAggregator }) as IScreen);
-            LeftPanelToggle = false;
+        }
+        
+        public void PreviewDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        public void ManageSelection(MenuItemViewModel item)
+        {
+            if (item.HasItems)
+            {
+                item.IsSelected = false;
+                if (activeMenu != null)
+                    activeMenu.IsSelected = true;
+            }
+            else
+            {
+                if (item.Screen != null && activeMenu != item)
+                {
+                    activeMenu = item;
+                    DeactivateItem(ActiveItem, false);
+                    ActivateItem(Activator.CreateInstance(item.Screen, new object[] { _eventAggregator }) as IScreen);
+                }
+            }
         }
 
         public void MinimizeButton()
@@ -170,6 +189,17 @@ namespace NYTD.App.ViewModels {
         public void CloseButton(Window window)
         {
             window.Close();
+        }
+
+        public void GoHome()
+        {
+            if (!ActiveItem.Equals(homeScreen))
+            {
+                activeMenu.IsSelected = false;
+                activeMenu = null;
+                DeactivateItem(ActiveItem, false);
+                ActivateItem(homeScreen);
+            }
         }
 
         #endregion
