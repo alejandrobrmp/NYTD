@@ -1,16 +1,14 @@
-﻿using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
-using NYTD.Lib.Services.Impl;
-using System;
+﻿using Google.Apis.YouTube.v3.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace NYTD.Lib.Services.Interfaces
+namespace NYTD.Lib
 {
     public interface IYouTubeApiService
     {
         Task<SearchListResponse> Search(SearchQuery query);
+        Task<VideoListResponse> GetVideoInfo(VideoQuery query);
+        Task<ChannelListResponse> GetChannelInfo(ChannelQuery query);
+        Task<PlaylistListResponse> GetPlaylistInfo(PlaylistQuery query);
     }
 }

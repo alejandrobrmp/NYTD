@@ -6,6 +6,7 @@
                     xmlns:models="clr-namespace:NYTD.App.Models"
                     xmlns:viewmodels="clr-namespace:NYTD.App.ViewModels"
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:yt="clr-namespace:Google.Apis.YouTube.v3.Data;assembly=Google.Apis.YouTube.v3"
                     
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
@@ -47,5 +48,116 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate x:Key="VideoTemplate" DataType="{x:Type yt:Video}">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="Thumbnail"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Grid.Column="0"
+                   Width="160"
+                   Height="90"
+                   Margin="0,0,10,10"
+                   VerticalAlignment="Top"
+                   Source="{Binding Snippet.Thumbnails.Medium.Url}"/>
+            <TextBlock x:Name="Title"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       FontSize="16"
+                       TextWrapping="WrapWithOverflow"
+                       Style="{StaticResource MaterialDesignTitleTextBlock}"
+                       Text="{Binding Snippet.Title}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ChannelTemplate" DataType="{x:Type yt:Channel}">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="Thumbnail"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Grid.Column="0"
+                   Width="160"
+                   Height="90"
+                   Margin="0,0,10,0"
+                   VerticalAlignment="Top"
+                   Source="{Binding Snippet.Thumbnails.Medium.Url}"/>
+            <TextBlock x:Name="Title"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       FontSize="16"
+                       TextWrapping="WrapWithOverflow"
+                       Text="{Binding Snippet.Title}"/>
+            <Grid x:Name="Content"
+                  Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="5,5,0,0">
+                <TextBlock x:Name="Subscribers"
+                           Grid.Row="0"
+                           Grid.Column="0">
+                    <Run Text="Subscribers: "/>
+                    <Run Text="{Binding Statistics.SubscriberCount, StringFormat=N0}"/>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PLaylistTemplate" DataType="{x:Type yt:Playlist}">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0"
+                  Grid.RowSpan="2"
+                  Grid.Column="0"
+                  Width="160"
+                  Height="90"
+                  Margin="0,0,10,10">
+                <Image x:Name="Thumbnail"
+                       Width="160"
+                       Height="90"
+                       VerticalAlignment="Top"
+                       Source="{Binding Snippet.Thumbnails.Medium.Url}"/>
+                <Rectangle Fill="Black"
+                           Opacity=".7"
+                           Width="80"
+                           Height="90"
+                           HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding ContentDetails.ItemCount}"
+                           Style="{StaticResource MaterialDesignBody2TextBlock}"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Margin="0,0,30,0"/>
+            </Grid>
+            <TextBlock x:Name="Title"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       FontSize="16"
+                       TextWrapping="WrapWithOverflow"
+                       Style="{StaticResource MaterialDesignTitleTextBlock}"
+                       Text="{Binding Snippet.Title}"/>
+        </Grid>
+    </DataTemplate>
 
 </ResourceDictionary>

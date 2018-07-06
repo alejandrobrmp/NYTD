@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NYTD.Lib.Services.Interfaces
+namespace NYTD.Lib
 {
-    public interface IYTApiService
+    public class ChannelQuery : Query
     {
-        IYouTubeApiService Service { get; }
+        public string Id { get; set; }
+
     }
 }

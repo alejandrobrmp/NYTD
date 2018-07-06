@@ -12,9 +12,6 @@ namespace NYTD.App.ViewModels
         ContentViewModelBase<HomeViewModel>,
         IHandle<EventAggregatorMessage<IScreen>>
     {
-        public HomeViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
-        {
-        }
 
         public void Handle(EventAggregatorMessage<IScreen> message)
         {

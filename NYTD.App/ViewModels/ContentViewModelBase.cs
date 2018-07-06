@@ -12,12 +12,7 @@ namespace NYTD.App.ViewModels
         Screen,
         IHandle<EventAggregatorMessage<T>> where T : IScreen
     {
-        protected readonly IEventAggregator _eventAggregator;
-
-        public ContentViewModelBase(IEventAggregator eventAggregator)
-        {
-            _eventAggregator = eventAggregator;
-        }
+        public IEventAggregator _eventAggregator { get; set; }
 
         public abstract void Handle(EventAggregatorMessage<T> message);
 

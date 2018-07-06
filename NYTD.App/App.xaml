@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="/Converters/ConverterDictionary.xaml"/>
                 <ResourceDictionary Source="/Styles/Styles.xaml"/>
+                <ResourceDictionary Source="/TemplateSelectors/TemplateSelectorDictionary.xaml"/>
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="bootstrapper" />
                 </ResourceDictionary>

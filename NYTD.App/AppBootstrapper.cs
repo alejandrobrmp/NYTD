@@ -3,7 +3,10 @@ namespace NYTD.App {
     using System.Collections.Generic;
     using Caliburn.Micro;
     using NYTD.App.Persistence;
+    using NYTD.App.Services.Impl;
+    using NYTD.App.Services.Interfaces;
     using NYTD.App.ViewModels;
+    using NYTD.Lib;
 
     public class AppBootstrapper : BootstrapperBase {
         SimpleContainer container;
@@ -15,7 +18,10 @@ namespace NYTD.App {
         protected override void Configure() {
             container = new SimpleContainer();
 
-            container.Singleton<JSONHelper>();
+            //container.Singleton<JSONHelper>();
+            container.Singleton<IYouTubeApiService, YouTubeApiService>();
+
+            container.Singleton<ISearchService, SearchService>();
 
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<IEventAggregator, EventAggregator>();

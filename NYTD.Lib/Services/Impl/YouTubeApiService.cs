@@ -1,14 +1,10 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
-using NYTD.Lib.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace NYTD.Lib.Services.Impl
+namespace NYTD.Lib
 {
     public class YouTubeApiService : IYouTubeApiService
     {
@@ -18,8 +14,8 @@ namespace NYTD.Lib.Services.Impl
         {
             _youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                ApplicationName = "NYTD",
-                ApiKey = "AIzaSyA7WI4ceM3QE0xr3ujotmDjc292nxDKyVo"
+                ApplicationName = this.GetType().ToString(),
+                ApiKey = "AIzaSyA7WI4ceM3QE0xr3ujotmDjc292nxDKyVo",
             });
         }
 
@@ -29,6 +25,34 @@ namespace NYTD.Lib.Services.Impl
             listRequest.Q = query.Query;
             listRequest.Order = query.Order;
             listRequest.PageToken = query.PageToken;
+            listRequest.MaxResults = query.MaxResults;
+            listRequest.Type = query.Type;
+
+            return await listRequest.ExecuteAsync();
+        }
+
+        public async Task<VideoListResponse> GetVideoInfo(VideoQuery query)
+        {
+            VideosResource.ListRequest listRequest = _youtubeService.Videos.List(query.Part);
+            listRequest.Id = query.Id;
+            listRequest.MaxResults = query.MaxResults;
+
+            return await listRequest.ExecuteAsync();
+        }
+
+        public async Task<ChannelListResponse> GetChannelInfo(ChannelQuery query)
+        {
+            ChannelsResource.ListRequest listRequest = _youtubeService.Channels.List(query.Part);
+            listRequest.Id = query.Id;
+            listRequest.MaxResults = query.MaxResults;
+
+            return await listRequest.ExecuteAsync();
+        }
+
+        public async Task<PlaylistListResponse> GetPlaylistInfo(PlaylistQuery query)
+        {
+            PlaylistsResource.ListRequest listRequest = _youtubeService.Playlists.List(query.Part);
+            listRequest.Id = query.Id;
             listRequest.MaxResults = query.MaxResults;
 
             return await listRequest.ExecuteAsync();

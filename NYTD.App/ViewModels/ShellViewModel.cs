@@ -197,11 +197,14 @@ namespace NYTD.App.ViewModels {
 
         #region Constructor
 
-        public ShellViewModel(IEventAggregator eventAggregator)
+        public ShellViewModel(
+            IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
-            homeScreen = new HomeViewModel(eventAggregator);
+            var home = new HomeViewModel();
+            IoC.BuildUp(home);
+            homeScreen = home;
         }
 
         #endregion
@@ -329,7 +332,9 @@ namespace NYTD.App.ViewModels {
                 {
                     activeMenu = item;
                     DeactivateItem(ActiveItem, false);
-                    ActivateItem(Activator.CreateInstance(item.Screen, new object[] { _eventAggregator }) as IScreen);
+                    var screen = Activator.CreateInstance(item.Screen, new object[] { }) as IScreen;
+                    IoC.BuildUp(screen);
+                    ActivateItem(screen);
                 }
             }
         }

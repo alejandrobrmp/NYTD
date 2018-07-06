@@ -3,4 +3,5 @@
                     xmlns:local="clr-namespace:NYTD.App.Converters">
     <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
 </ResourceDictionary>
