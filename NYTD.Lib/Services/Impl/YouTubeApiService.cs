@@ -10,12 +10,12 @@ namespace NYTD.Lib
     {
         private YouTubeService _youtubeService;
 
-        public YouTubeApiService()
+        public void Initialize(string API_KEY)
         {
             _youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApplicationName = this.GetType().ToString(),
-                ApiKey = "AIzaSyA7WI4ceM3QE0xr3ujotmDjc292nxDKyVo",
+                ApiKey = API_KEY,
             });
         }
 

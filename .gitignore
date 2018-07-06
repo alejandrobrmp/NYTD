@@ -192,3 +192,8 @@ bin
 obj
 
 .vs
+Properties/Settings*
+
+NYTD\.App/Properties/Settings\.Designer\.cs
+
+NYTD\.App/Properties/Settings\.settings

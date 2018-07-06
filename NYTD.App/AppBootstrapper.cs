@@ -20,6 +20,7 @@ namespace NYTD.App {
 
             //container.Singleton<JSONHelper>();
             container.Singleton<IYouTubeApiService, YouTubeApiService>();
+            container.GetInstance<IYouTubeApiService>().Initialize(Properties.Settings.Default.API_KEY);
 
             container.Singleton<ISearchService, SearchService>();
 
