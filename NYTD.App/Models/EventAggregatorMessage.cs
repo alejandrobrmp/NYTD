@@ -9,7 +9,7 @@ namespace NYTD.App.Models
 {
     public enum EventAggregatorMessageKind
     {
-        TitleChangeRequest
+        TitleChangeRequest,
     }
 
     public class EventAggregatorMessage<T> where T : IScreen

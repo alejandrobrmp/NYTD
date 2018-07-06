@@ -136,12 +136,17 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="Models\ManageScreenRequest.cs" />
     <Compile Include="Models\EventAggregatorMessage.cs" />
     <Compile Include="Models\Option.cs" />
     <Compile Include="Models\SearchResponse.cs" />
     <Compile Include="Persistence\DatabaseHelper.cs" />
     <Compile Include="Persistence\JSONHelper.cs" />
+    <Compile Include="Services\Impl\CacheService.cs" />
+    <Compile Include="Services\Impl\NavigationService.cs" />
     <Compile Include="Services\Impl\SearchService.cs" />
+    <Compile Include="Services\Interfaces\ICacheService.cs" />
+    <Compile Include="Services\Interfaces\INavigationService.cs" />
     <Compile Include="Services\Interfaces\IPagination.cs" />
     <Compile Include="Services\Interfaces\ISearchService.cs" />
     <Compile Include="TemplateSelectors\SearchListDataTemplateSelector.cs" />
@@ -154,8 +159,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VideoView.xaml.cs">
+      <DependentUpon>VideoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfCommon\RoutedEventTrigger.cs" />
     <Page Include="Converters\ConverterDictionary.xaml">
@@ -179,6 +188,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VideoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

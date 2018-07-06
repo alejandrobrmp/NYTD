@@ -15,7 +15,7 @@ using System;
 
 namespace NYTD.App.ViewModels {
     public class ShellViewModel :
-        Conductor<IScreen>.Collection.OneActive,
+        Conductor<IScreen>,
         IShell,
         IHandle<EventAggregatorMessage<ShellViewModel>>,
         IHandle<EventAggregatorMessage<IScreen>>,
@@ -145,6 +145,7 @@ namespace NYTD.App.ViewModels {
         #region Services
 
         private readonly IEventAggregator _eventAggregator;
+        private readonly Services.Interfaces.INavigationService _navigationService;
 
         #endregion
 
@@ -160,8 +161,10 @@ namespace NYTD.App.ViewModels {
         private WindowState windowState = WindowState.Normal;
         private IScreen activeScreen;
         private MenuItemViewModel activeMenu;
-        private IScreen homeScreen;
+        private Type homeScreen;
         private List<MenuItemViewModel> mainMenu;
+
+        private Queue<IScreen> history = new Queue<IScreen>();
 
         #endregion
         
@@ -198,13 +201,23 @@ namespace NYTD.App.ViewModels {
         #region Constructor
 
         public ShellViewModel(
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            Services.Interfaces.INavigationService navigationService)
         {
+            _navigationService = navigationService;
+            _navigationService.ActivateScreen += (object sender, EventArgs e) =>
+            {
+                ManageScreenRequest request = e as ManageScreenRequest;
+                ActivateItem(request.Screen);
+            };
+            _navigationService.DeactivateScreen += (object sender, EventArgs e) =>
+            {
+                ManageScreenRequest request = e as ManageScreenRequest;
+                DeactivateItem(request.Screen, request.Close);
+            };
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
-            var home = new HomeViewModel();
-            IoC.BuildUp(home);
-            homeScreen = home;
+            homeScreen = typeof(HomeViewModel);
         }
 
         #endregion
@@ -254,7 +267,7 @@ namespace NYTD.App.ViewModels {
             };
             //mainMenu[0].IsSelected = true;
             //SelectedMenuChanged(this, new RoutedPropertyChangedEventArgs<object>(null, mainMenu[0]));
-            ActivateItem(homeScreen);
+            _navigationService.Load(homeScreen);
         }
 
         #endregion
@@ -331,10 +344,7 @@ namespace NYTD.App.ViewModels {
                 if (item.Screen != null && activeMenu != item)
                 {
                     activeMenu = item;
-                    DeactivateItem(ActiveItem, false);
-                    var screen = Activator.CreateInstance(item.Screen, new object[] { }) as IScreen;
-                    IoC.BuildUp(screen);
-                    ActivateItem(screen);
+                    _navigationService.Load(item.Screen);
                 }
             }
         }
@@ -360,8 +370,7 @@ namespace NYTD.App.ViewModels {
             {
                 activeMenu.IsSelected = false;
                 activeMenu = null;
-                DeactivateItem(ActiveItem, false);
-                ActivateItem(homeScreen);
+                _navigationService.Load(homeScreen);
             }
         }
 

@@ -18,7 +18,8 @@ namespace NYTD.App {
         protected override void Configure() {
             container = new SimpleContainer();
 
-            //container.Singleton<JSONHelper>();
+            container.Singleton<Services.Interfaces.INavigationService, NavigationService>();
+            container.Singleton<ICacheService, CacheService>();
             container.Singleton<IYouTubeApiService, YouTubeApiService>();
             container.GetInstance<IYouTubeApiService>().Initialize(Properties.Settings.Default.API_KEY);
 

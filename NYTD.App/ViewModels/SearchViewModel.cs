@@ -1,10 +1,12 @@
 ﻿using Caliburn.Micro;
+using Google.Apis.YouTube.v3.Data;
 using NYTD.App.Models;
 using NYTD.App.Services.Impl;
 using NYTD.App.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -16,6 +18,8 @@ namespace NYTD.App.ViewModels
         IHandle<EventAggregatorMessage<IScreen>>
     {
         public ISearchService _searchService { get; set; }
+        public ICacheService _cacheService { get; set; }
+        public Services.Interfaces.INavigationService _navigationService { get; set; }
 
         private string searchBox;
         public string SearchBox { get => searchBox;
@@ -63,6 +67,34 @@ namespace NYTD.App.ViewModels
             if (e.Key.Equals(Key.Enter))
             {
                 Search();
+            }
+        }
+
+        public void SelectedItem(SelectionChangedEventArgs e)
+        {
+            if (e is null || !(e.AddedItems.Count == 1)) return;
+
+            object selected = e.AddedItems[0];
+            Type screen = null;
+            string name = null;
+            if (selected is Video)
+            {
+                screen = typeof(VideoViewModel);
+                name = nameof(VideoViewModel);
+            }
+            else if (selected is Channel)
+            {
+
+            }
+            else if (selected is Playlist)
+            {
+
+            }
+
+            if (!(screen is null))
+            {
+                _cacheService.Save(name, selected);
+                _navigationService.NavigateTo(screen);
             }
         }
 

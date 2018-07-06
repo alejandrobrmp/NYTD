@@ -101,11 +101,12 @@
                     <ListView x:Name="ResultList"
                               ItemTemplateSelector="{StaticResource SearchListDataTemplateSelector}"
                               ScrollViewer.CanContentScroll="False"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              cal:Message.Attach="[Event SelectionChanged] = [Action SelectedItem($eventArgs)]">
                         <i:Interaction.Triggers>
                             <wpfCommon:RoutedEventTrigger RoutedEvent="ScrollViewer.ScrollChanged">
                                 <cal:ActionMessage MethodName="Scroll">
-                                    <cal:Parameter Value="$eventargs" />
+                                    <cal:Parameter Value="$eventargs"/>
                                 </cal:ActionMessage>
                             </wpfCommon:RoutedEventTrigger>
                         </i:Interaction.Triggers>
