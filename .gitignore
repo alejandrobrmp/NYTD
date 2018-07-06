@@ -197,3 +197,5 @@ Properties/Settings*
 NYTD\.App/Properties/Settings\.Designer\.cs
 
 NYTD\.App/Properties/Settings\.settings
+
+NYTD\.App/App\.config
